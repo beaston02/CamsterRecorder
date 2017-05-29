@@ -1,6 +1,6 @@
 # CamsterRecorder
 
-This is script to automate the recording of public webcam shows from camster (and other naiadsystems based sites). 
+This is script to automate the recording of public webcam shows from camster. 
 
 
 ## Requirements
@@ -16,4 +16,5 @@ python3.5 -m pip install livesteramer bs4
 
 
 edit lines 6 and 8 to set the path for the directory to save the videos to, and to set the location of the "wanted.txt" file.
-Add one model per line. The model should match the models name in their chatrooms URL (http://camster.com/webcamcam/{modelname}/{uid}). 
+
+Add models to the "wanted.txt" file (only one model per line). The model should match the models name in their chatrooms URL (http://camster.com/webcamcam/{modelname}/{uid}). 
