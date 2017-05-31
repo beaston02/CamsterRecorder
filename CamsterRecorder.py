@@ -17,6 +17,7 @@ def getOnlineModels():
             models = model.split()
             for theModel in models:
                 wanted.append(theModel.lower())
+    f.close()
     online = []
     result = urllib.request.urlopen("http://new.naked.com/")
     result = result.read()
@@ -53,6 +54,7 @@ def startRecording(model, link):
                 f.write(data)
             except:
                 recording.remove(model)
+                f.close()
                 return ()
 
 if __name__ == '__main__':
