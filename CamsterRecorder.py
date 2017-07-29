@@ -38,7 +38,7 @@ def getOnlineModels():
 
 def startRecording(model, link):
     session = Livestreamer()
-    streams = session.streams("hls://http://transcode.k8s.naked.com/hls/" + link + "/index.m3u8")
+    streams = session.streams("hls://http://transcode.k8s-do.naked.com/hls/" + link + "/index.m3u8")
     stream = streams["best"]
     fd = stream.open()
     ts = time.time()
