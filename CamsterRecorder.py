@@ -1,11 +1,12 @@
-import urllib.request, os, time, datetime, random, sys, threading
+import requests, os, time, datetime, random, sys, threading, configparser
 from bs4 import BeautifulSoup
 from livestreamer import Livestreamer
 
-#specify path to save to ie "/Users/Joe/camster"
-save_directory = "/Users/Joe/camster"
-#specify the path to the wishlist file ie "/Users/Joe/camster/wanted.txt"
-wishlist = "/Users/Joe/camster/wanted.txt"
+mainDir = sys.path[0]
+Config = configparser.ConfigParser()
+Config.read(mainDir + "/config.conf")
+save_directory = Config.get('paths', 'save_directory')
+wishlist = Config.get('paths', 'wishlist')
 
 if not os.path.exists("{path}".format(path=save_directory)):
     os.makedirs("{path}".format(path=save_directory))
@@ -19,15 +20,18 @@ def getOnlineModels():
                 wanted.append(theModel.lower())
     f.close()
     online = []
-    result = urllib.request.urlopen("http://new.naked.com/")
-    result = result.read()
-    soup = BeautifulSoup(result, 'lxml')
-    for a in soup.find_all('a', href=True):
-        if a['href'][:8] == '/webcam/':
-            online.append(a['href'])
-    result = urllib.request.urlopen("http://new.naked.com" + random.choice(online))
-    result = result.read()
-    soup = BeautifulSoup(result, 'lxml')
+    while True:
+        try:
+            result = requests.get("http://new.naked.com/").text
+            soup = BeautifulSoup(result, 'lxml')
+            for a in soup.find_all('a', href=True):
+                if a['href'][:8] == '/webcam/':
+                    online.append(a['href'])
+            result = requests.get("http://new.naked.com" + random.choice(online)).text
+            soup = BeautifulSoup(result, 'lxml')
+            break
+        except:
+            time.sleep(20)
     for model in soup.findAll("div", {"class": "each-girls"}):
         aux = model.findAll('a')
         modelName = str(aux).split('"')[3][8:].split('/')[0].lower()
@@ -38,6 +42,7 @@ def getOnlineModels():
 
 def startRecording(model, link):
     session = Livestreamer()
+
     streams = session.streams("hls://http://transcode.k8s-do.naked.com/hls/" + link + "/index.m3u8")
     stream = streams["best"]
     fd = stream.open()
