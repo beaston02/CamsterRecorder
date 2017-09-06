@@ -15,6 +15,6 @@ python3.5 -m pip install livestreamer bs4 lxml gevent
 ```
 
 
-edit lines 6 and 8 to set the path for the directory to save the videos to, and to set the location of the "wanted.txt" file.
+Set the appropriate paths in the config file.
 
 Add models to the "wanted.txt" file (only one model per line). The model should match the models name in their chatrooms URL (http://camster.com/webcamcam/{modelname}/{uid}). 
